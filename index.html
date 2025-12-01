@@ -12,12 +12,14 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    font-family: system-ui, sans-serif;
   }
 
   body {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: background 0.5s ease;
   }
 
   .flip-container {
@@ -26,25 +28,28 @@
     max-width: 1200px;
     aspect-ratio: 16/9;
     background: #000;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    transform-origin: center center;
+    transition: all 0.4s ease;
   }
 
   iframe {
     position: absolute;
-    top: 0; left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     border: none;
     border-radius: inherit;
+    touch-action: pan-y pinch-zoom;
   }
 
-  /* Mobile fix */
+  /* ✅ Mobile Full View */
   @media (max-width: 900px) {
     html, body {
       background: #000;
-      height: 100svh; /* NEW: Safe viewport height fix for iPhone */
+      height: 100svh; /* Safe viewport for iPhone */
     }
     .flip-container {
       width: 100vw;
@@ -53,17 +58,59 @@
       border-radius: 0;
       box-shadow: none;
     }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+  }
+
+  /* ✅ Landscape Auto-Fullscreen (phones) */
+  @media screen and (orientation: landscape) and (max-height: 600px) {
+    html, body {
+      background: #000;
     }
+    .flip-container {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      transform: scale(1);
+      box-shadow: none;
+    }
+  }
+
+  /* ✅ Tablet optimization */
+  @media (min-width: 900px) and (max-width: 1200px) {
+    .flip-container {
+      width: 95vw;
+      aspect-ratio: 16/10;
+    }
+  }
+
+  /* Animation hint when fullscreen active */
+  .fullscreen-active {
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    border-radius: 0;
+    transition: none;
+  }
+
+  .hint {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ccc;
+    font-size: 13px;
+    opacity: 0.8;
+    font-weight: 400;
+    pointer-events: none;
+  }
+
+  @keyframes fadeOut {
+    from { opacity: 0.9; }
+    to { opacity: 0; }
   }
 </style>
 </head>
 <body>
-  <div class="flip-container">
+  <div class="flip-container" id="container">
     <iframe
+      id="flipFrame"
       src="./book/index.html"
       scrolling="no"
       allowfullscreen
@@ -72,6 +119,60 @@
       sandbox="allow-same-origin allow-scripts allow-popups"
       referrerpolicy="no-referrer"
     ></iframe>
+    <div class="hint" id="hint">Vuốt để lật trang hoặc xoay ngang để fullscreen</div>
   </div>
+
+  <script>
+    const container = document.getElementById('container');
+    const hint = document.getElementById('hint');
+
+    // ✅ Auto-fit khi resize
+    window.addEventListener('resize', adjustFit);
+    window.addEventListener('orientationchange', adjustFit);
+    window.addEventListener('load', () => {
+      adjustFit();
+      fadeOutHint();
+    });
+
+    function adjustFit() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const isMobile = w < 900;
+
+      if (isMobile) {
+        container.style.width = '100vw';
+        container.style.height = '100svh';
+        container.style.aspectRatio = 'auto';
+        container.style.borderRadius = '0';
+      } else {
+        container.style.width = '90vw';
+        container.style.maxWidth = '1200px';
+        container.style.aspectRatio = '16/9';
+        container.style.height = '';
+        container.style.borderRadius = '12px';
+      }
+
+      // ✅ Nếu ở landscape & mobile thì scale để fit ngang
+      if (isMobile && window.matchMedia('(orientation: landscape)').matches) {
+        container.classList.add('fullscreen-active');
+        const ratio = w / h > 1.6 ? 1 : w / h;
+        container.style.transform = 'scale(' + ratio.toFixed(3) + ')';
+      } else {
+        container.classList.remove('fullscreen-active');
+        container.style.transform = 'scale(1)';
+      }
+    }
+
+    function fadeOutHint() {
+      setTimeout(() => {
+        hint.style.animation = 'fadeOut 1.5s forwards';
+      }, 4000);
+    }
+
+    // ✅ Auto hide hint khi chạm
+    window.addEventListener('touchstart', () => {
+      hint.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
