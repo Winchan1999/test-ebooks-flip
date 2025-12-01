@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 <title>Flipbook Viewer</title>
 <style>
   html,body {
@@ -12,22 +12,27 @@
     overflow:hidden;
     display:flex; justify-content:center; align-items:center;
     touch-action:none;
+    -webkit-user-select:none;
+    user-select:none;
   }
 
   #flipbook {
     width:90vw;
-    height:70vh;
-    box-shadow:0 0 25px rgba(0,0,0,0.5);
+    height:80vh;
+    box-shadow:0 0 25px rgba(0,0,0,0.6);
+    border-radius:8px;
+    background:#111;
     transition:transform 0.25s ease;
-    border-radius:6px;
   }
 
   .page {
-    background:#fff;
+    background:#000;
     width:50%;
     height:100%;
-    box-shadow:inset 0 0 20px rgba(0,0,0,0.2);
-    user-select:none;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
   }
 
   .page img {
@@ -47,16 +52,17 @@
     display:flex;
     gap:0.8rem;
     z-index:999;
-    background:rgba(15,23,42,0.45);
+    background:rgba(15,23,42,0.6);
     padding:6px 12px;
     border-radius:24px;
-    backdrop-filter:blur(10px);
+    backdrop-filter:blur(12px);
     align-items:center;
     transition:opacity 0.4s ease;
   }
 
   .toolbar.hide {
-    opacity:0; pointer-events:none;
+    opacity:0;
+    pointer-events:none;
   }
 
   .toolbar button {
@@ -71,7 +77,9 @@
     transition:background 0.2s ease;
   }
 
-  .toolbar button:hover { background:rgba(255,255,255,0.3); }
+  .toolbar button:hover {
+    background:rgba(255,255,255,0.3);
+  }
 
   .toolbar span {
     color:#fff;
@@ -80,44 +88,53 @@
     text-align:center;
   }
 
-  @media (max-width:768px){
-    #flipbook {width:100vw;height:85vh;box-shadow:none;}
-    .page{width:100%;box-shadow:none;}
-    .toolbar{gap:0.6rem;padding:4px 8px;bottom:0.5rem;}
-    .toolbar button{font-size:15px;padding:6px 10px;}
+  @media (max-width:900px){
+    #flipbook {
+      width:100vw;
+      height:100svh;
+      box-shadow:none;
+      border-radius:0;
+    }
+    .toolbar {
+      bottom:0.6rem;
+      padding:4px 8px;
+      gap:0.6rem;
+      background:rgba(0,0,0,0.4);
+    }
+    .toolbar button { font-size:15px; padding:6px 10px; }
   }
 </style>
 </head>
 <body>
-  <div id="flipbook">
-      <div class="page"><img src="pages/1.jpg" alt="Trang 1"></div>
-      <div class="page"><img src="pages/2.jpg" alt="Trang 2"></div>
-      <div class="page"><img src="pages/3.jpg" alt="Trang 3"></div>
-      <div class="page"><img src="pages/4.jpg" alt="Trang 4"></div>
-      <div class="page"><img src="pages/5.jpg" alt="Trang 5"></div>
-      <div class="page"><img src="pages/6.jpg" alt="Trang 6"></div>
-      <div class="page"><img src="pages/7.jpg" alt="Trang 7"></div>
-      <div class="page"><img src="pages/8.jpg" alt="Trang 8"></div>
-      <div class="page"><img src="pages/9.jpg" alt="Trang 9"></div>
-      <div class="page"><img src="pages/10.jpg" alt="Trang 10"></div>
-      <div class="page"><img src="pages/11.jpg" alt="Trang 11"></div>
-      <div class="page"><img src="pages/12.jpg" alt="Trang 12"></div>
-      <div class="page"><img src="pages/13.jpg" alt="Trang 13"></div>
-      <div class="page"><img src="pages/14.jpg" alt="Trang 14"></div>
-      <div class="page"><img src="pages/15.jpg" alt="Trang 15"></div>
-      <div class="page"><img src="pages/16.jpg" alt="Trang 16"></div>
-      <div class="page"><img src="pages/17.jpg" alt="Trang 17"></div>
-      <div class="page"><img src="pages/18.jpg" alt="Trang 18"></div>
-      <div class="page"><img src="pages/19.jpg" alt="Trang 19"></div>
-      <div class="page"><img src="pages/20.jpg" alt="Trang 20"></div>
-      <div class="page"><img src="pages/21.jpg" alt="Trang 21"></div>
-      <div class="page"><img src="pages/22.jpg" alt="Trang 22"></div>
-      <div class="page"><img src="pages/23.jpg" alt="Trang 23"></div>
-      <div class="page"><img src="pages/24.jpg" alt="Trang 24"></div>
-      <div class="page"><img src="pages/25.jpg" alt="Trang 25"></div>
-      <div class="page"><img src="pages/26.jpg" alt="Trang 26"></div>
-      <div class="page"><img src="pages/27.jpg" alt="Trang 27"></div>
-      <div class="page"><img src="pages/28.jpg" alt="Trang 28"></div></div>
+  <div id="flipbook"><div class="page"><img src="pages/1.jpg" alt="Trang 1"></div>
+<div class="page"><img src="pages/2.jpg" alt="Trang 2"></div>
+<div class="page"><img src="pages/3.jpg" alt="Trang 3"></div>
+<div class="page"><img src="pages/4.jpg" alt="Trang 4"></div>
+<div class="page"><img src="pages/5.jpg" alt="Trang 5"></div>
+<div class="page"><img src="pages/6.jpg" alt="Trang 6"></div>
+<div class="page"><img src="pages/7.jpg" alt="Trang 7"></div>
+<div class="page"><img src="pages/8.jpg" alt="Trang 8"></div>
+<div class="page"><img src="pages/9.jpg" alt="Trang 9"></div>
+<div class="page"><img src="pages/10.jpg" alt="Trang 10"></div>
+<div class="page"><img src="pages/11.jpg" alt="Trang 11"></div>
+<div class="page"><img src="pages/12.jpg" alt="Trang 12"></div>
+<div class="page"><img src="pages/13.jpg" alt="Trang 13"></div>
+<div class="page"><img src="pages/14.jpg" alt="Trang 14"></div>
+<div class="page"><img src="pages/15.jpg" alt="Trang 15"></div>
+<div class="page"><img src="pages/16.jpg" alt="Trang 16"></div>
+<div class="page"><img src="pages/17.jpg" alt="Trang 17"></div>
+<div class="page"><img src="pages/18.jpg" alt="Trang 18"></div>
+<div class="page"><img src="pages/19.jpg" alt="Trang 19"></div>
+<div class="page"><img src="pages/20.jpg" alt="Trang 20"></div>
+<div class="page"><img src="pages/21.jpg" alt="Trang 21"></div>
+<div class="page"><img src="pages/22.jpg" alt="Trang 22"></div>
+<div class="page"><img src="pages/23.jpg" alt="Trang 23"></div>
+<div class="page"><img src="pages/24.jpg" alt="Trang 24"></div>
+<div class="page"><img src="pages/25.jpg" alt="Trang 25"></div>
+<div class="page"><img src="pages/26.jpg" alt="Trang 26"></div>
+<div class="page"><img src="pages/27.jpg" alt="Trang 27"></div>
+<div class="page"><img src="pages/28.jpg" alt="Trang 28"></div>
+</div>
 
   <div class="toolbar" id="toolbar">
     <button onclick="flipPrev()">⟵</button>
@@ -126,8 +143,8 @@
     <button onclick="toggleFS()">⛶</button>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/blasten/turn.js/turn.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
   <script>
     let book, total=28;
     let startX=0, currentX=0, dragging=false;
@@ -137,19 +154,20 @@
       book.turn({
         width:'100%',
         height:'100%',
-        display: window.innerWidth < 768 ? 'single' : 'double',
+        display: window.innerWidth < 900 ? 'single' : 'double',
         autoCenter:true,
         acceleration:true,
         gradients:true,
-        elevation:60,
-        duration:1000
+        elevation:80,
+        duration:1200
       });
 
       updateLabel();
       book.bind('turned', function(e, page){updateLabel(page);});
       window.addEventListener('resize', () => {
-        const mode = window.innerWidth < 768 ? 'single' : 'double';
+        const mode = window.innerWidth < 900 ? 'single' : 'double';
         book.turn('display', mode);
+        book.turn('size', book.width(), book.height());
       });
 
       setupGestures();
@@ -177,7 +195,7 @@
         if(!dragging) return;
         currentX=x;
         const delta = currentX - startX;
-        book.css('transform', 'translateX('+(delta*0.05)+'px)');
+        book.css('transform','translateX('+(delta*0.05)+'px)');
       };
       const end = ()=>{
         if(!dragging) return;
@@ -200,11 +218,15 @@
       area.addEventListener('touchend', e => end());
     }
 
-    // Ẩn/hiện toolbar
+    // Ẩn/hiện toolbar tự động
     function autoHideToolbar(){
       const tb=document.getElementById('toolbar');
       let timer=null;
-      const show=()=>{tb.classList.remove('hide');clearTimeout(timer);timer=setTimeout(()=>tb.classList.add('hide'),2500);};
+      const show=()=>{
+        tb.classList.remove('hide');
+        clearTimeout(timer);
+        timer=setTimeout(()=>tb.classList.add('hide'),2500);
+      };
       document.addEventListener('mousemove',show);
       document.addEventListener('touchstart',show);
       show();
