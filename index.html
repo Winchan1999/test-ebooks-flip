@@ -2,91 +2,106 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Doc3_Flipbook - Flipbook</title>
 <style>
-  html,body {
-    margin:0; padding:0; width:100%; height:100%;
-    background:#0b0f1a; display:flex; justify-content:center; align-items:center;
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #0b0f1a;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .flip-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
   }
 
   .flip-container {
-    position:relative;
-    width:100%;
-    max-width:1200px;
-    aspect-ratio:16/9;
-    overflow:hidden;
-    border-radius:12px;
-    background:#0b0f1a;
-    box-shadow:0 0 30px rgba(0,0,0,0.6);
+    position: relative;
+    width: 90vw;
+    max-width: 1200px;
+    aspect-ratio: 16/9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    background: #000;
   }
 
   iframe {
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    border:none;
-    border-radius:inherit;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: inherit;
   }
 
-  /* Mobile fix */
-  @media (max-width:900px){
-    body {
-      align-items:flex-start;
-      background:#000;
-    }
-    .flip-container{
-      width:100vw;
-      height:calc(100vh - 10px);
-      aspect-ratio:auto;
-      border-radius:0;
-      margin-top:5px;
-      box-shadow:none;
-    }
-    iframe {
-      width:100%;
-      height:100%;
-      border:none;
-      transform-origin:center top;
-      transform:scale(1);
+  /* Mobile friendly full-frame mode */
+  @media (max-width: 768px) {
+    .flip-container {
+      width: 100vw;
+      height: 100vh;
+      aspect-ratio: auto;
+      border-radius: 0;
+      box-shadow: none;
     }
   }
 
-  @media (max-width:500px){
-    .flip-container{
-      height:100vh;
-      margin-top:0;
+  /* Landscape orientation auto fullscreen for mobile */
+  @media screen and (orientation: landscape) and (max-height: 600px) {
+    html, body {
+      background: #000;
+    }
+    .flip-container {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
     }
   }
 </style>
 </head>
 <body>
-  <div class="flip-container">
-    <iframe
-      src="./book/index.html"
-      scrolling="no"
-      frameborder="0"
-      allow="fullscreen"
-      allowfullscreen
-      sandbox="allow-same-origin allow-scripts allow-popups"
-      loading="lazy"
-      referrerpolicy="no-referrer"
-    ></iframe>
+  <div class="flip-wrapper">
+    <div class="flip-container" id="container">
+      <iframe 
+        src="./book/index.html"
+        allowfullscreen
+        scrolling="no"
+        frameborder="0"
+        allow="fullscreen; clipboard-read; clipboard-write"
+        sandbox="allow-same-origin allow-scripts allow-popups"
+        referrerpolicy="no-referrer"
+      ></iframe>
+    </div>
   </div>
 
   <script>
-    // Tự động scale nếu khung hẹp (iPhone fix)
-    window.addEventListener('resize', autoFit);
-    window.addEventListener('load', autoFit);
-    function autoFit(){
-      const frame = document.querySelector('iframe');
-      if(!frame) return;
-      const ratio = window.innerWidth / 1200;
-      if(window.innerWidth < 768){
-        frame.style.transform = 'scale(' + ratio.toFixed(3) + ')';
-        frame.style.transformOrigin = 'top center';
+    // Force mobile-safe fit
+    window.addEventListener('resize', adjustView);
+    window.addEventListener('orientationchange', adjustView);
+    window.addEventListener('load', adjustView);
+
+    function adjustView() {
+      const cont = document.getElementById('container');
+      if (!cont) return;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const isMobile = w < 900;
+
+      if (isMobile) {
+        cont.style.width = '100vw';
+        cont.style.height = '100vh';
+        cont.style.aspectRatio = 'auto';
       } else {
-        frame.style.transform = 'scale(1)';
+        cont.style.width = '90vw';
+        cont.style.maxWidth = '1200px';
+        cont.style.aspectRatio = '16/9';
+        cont.style.height = '';
       }
     }
   </script>
