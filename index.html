@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Doc3_Flipbook - Flipbook</title>
 <style>
   html, body {
@@ -14,13 +14,10 @@
     overflow: hidden;
   }
 
-  .flip-wrapper {
+  body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
-    position: relative;
   }
 
   .flip-container {
@@ -28,82 +25,53 @@
     width: 90vw;
     max-width: 1200px;
     aspect-ratio: 16/9;
+    background: #000;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 0 25px rgba(0,0,0,0.5);
-    background: #000;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
   }
 
   iframe {
+    position: absolute;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
     border: none;
     border-radius: inherit;
   }
 
-  /* Mobile friendly full-frame mode */
-  @media (max-width: 768px) {
+  /* Mobile fix */
+  @media (max-width: 900px) {
+    html, body {
+      background: #000;
+      height: 100svh; /* NEW: Safe viewport height fix for iPhone */
+    }
     .flip-container {
       width: 100vw;
-      height: 100vh;
+      height: 100svh;
       aspect-ratio: auto;
       border-radius: 0;
       box-shadow: none;
     }
-  }
-
-  /* Landscape orientation auto fullscreen for mobile */
-  @media screen and (orientation: landscape) and (max-height: 600px) {
-    html, body {
-      background: #000;
-    }
-    .flip-container {
-      width: 100vw;
-      height: 100vh;
-      border-radius: 0;
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
   }
 </style>
 </head>
 <body>
-  <div class="flip-wrapper">
-    <div class="flip-container" id="container">
-      <iframe 
-        src="./book/index.html"
-        allowfullscreen
-        scrolling="no"
-        frameborder="0"
-        allow="fullscreen; clipboard-read; clipboard-write"
-        sandbox="allow-same-origin allow-scripts allow-popups"
-        referrerpolicy="no-referrer"
-      ></iframe>
-    </div>
+  <div class="flip-container">
+    <iframe
+      src="./book/index.html"
+      scrolling="no"
+      allowfullscreen
+      frameborder="0"
+      allow="fullscreen; clipboard-read; clipboard-write"
+      sandbox="allow-same-origin allow-scripts allow-popups"
+      referrerpolicy="no-referrer"
+    ></iframe>
   </div>
-
-  <script>
-    // Force mobile-safe fit
-    window.addEventListener('resize', adjustView);
-    window.addEventListener('orientationchange', adjustView);
-    window.addEventListener('load', adjustView);
-
-    function adjustView() {
-      const cont = document.getElementById('container');
-      if (!cont) return;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const isMobile = w < 900;
-
-      if (isMobile) {
-        cont.style.width = '100vw';
-        cont.style.height = '100vh';
-        cont.style.aspectRatio = 'auto';
-      } else {
-        cont.style.width = '90vw';
-        cont.style.maxWidth = '1200px';
-        cont.style.aspectRatio = '16/9';
-        cont.style.height = '';
-      }
-    }
-  </script>
 </body>
 </html>
