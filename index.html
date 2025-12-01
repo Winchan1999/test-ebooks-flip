@@ -2,23 +2,25 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Doc3_Flipbook - Flipbook</title>
 <style>
   html,body {
     margin:0; padding:0; width:100%; height:100%;
     background:#0b0f1a; display:flex; justify-content:center; align-items:center;
   }
+
   .flip-container {
     position:relative;
     width:100%;
     max-width:1200px;
     aspect-ratio:16/9;
-    background:#0b0f1a;
     overflow:hidden;
     border-radius:12px;
+    background:#0b0f1a;
     box-shadow:0 0 30px rgba(0,0,0,0.6);
   }
+
   iframe {
     position:absolute;
     top:0; left:0;
@@ -26,13 +28,34 @@
     border:none;
     border-radius:inherit;
   }
-  @media (max-width:768px){
+
+  /* Mobile fix */
+  @media (max-width:900px){
+    body {
+      align-items:flex-start;
+      background:#000;
+    }
     .flip-container{
-      width:100%;
+      width:100vw;
+      height:calc(100vh - 10px);
       aspect-ratio:auto;
-      height:90vh;
       border-radius:0;
+      margin-top:5px;
       box-shadow:none;
+    }
+    iframe {
+      width:100%;
+      height:100%;
+      border:none;
+      transform-origin:center top;
+      transform:scale(1);
+    }
+  }
+
+  @media (max-width:500px){
+    .flip-container{
+      height:100vh;
+      margin-top:0;
     }
   }
 </style>
@@ -42,12 +65,30 @@
     <iframe
       src="./book/index.html"
       scrolling="no"
-      allow="fullscreen; clipboard-read; clipboard-write"
+      frameborder="0"
+      allow="fullscreen"
       allowfullscreen
+      sandbox="allow-same-origin allow-scripts allow-popups"
       loading="lazy"
       referrerpolicy="no-referrer"
-      sandbox="allow-scripts allow-same-origin allow-popups"
     ></iframe>
   </div>
+
+  <script>
+    // Tự động scale nếu khung hẹp (iPhone fix)
+    window.addEventListener('resize', autoFit);
+    window.addEventListener('load', autoFit);
+    function autoFit(){
+      const frame = document.querySelector('iframe');
+      if(!frame) return;
+      const ratio = window.innerWidth / 1200;
+      if(window.innerWidth < 768){
+        frame.style.transform = 'scale(' + ratio.toFixed(3) + ')';
+        frame.style.transformOrigin = 'top center';
+      } else {
+        frame.style.transform = 'scale(1)';
+      }
+    }
+  </script>
 </body>
 </html>
