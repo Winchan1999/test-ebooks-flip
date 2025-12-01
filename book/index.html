@@ -2,89 +2,89 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Flipbook Viewer</title>
 <style>
-  html, body {
-    margin: 0; padding: 0;
-    width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #0f172a, #020617);
-    overflow: hidden;
-    display: flex; justify-content: center; align-items: center;
+  html,body {
+    margin:0; padding:0;
+    width:100%; height:100%;
+    background:#0b0f1a;
+    overflow:hidden;
+    display:flex; justify-content:center; align-items:center;
+    touch-action:none;
   }
 
   #flipbook {
-    width: 90vw;
-    height: 60vh;
-    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    width:90vw;
+    height:70vh;
+    box-shadow:0 0 25px rgba(0,0,0,0.5);
+    transition:transform 0.25s ease;
+    border-radius:6px;
   }
 
   .page {
-    background: #fff;
-    width: 50%;
-    height: 100%;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    background:#fff;
+    width:50%;
+    height:100%;
+    box-shadow:inset 0 0 20px rgba(0,0,0,0.2);
+    user-select:none;
   }
 
   .page img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    pointer-events:none;
   }
 
+  /* Toolbar */
   .toolbar {
-    position: fixed;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.6rem;
-    z-index: 999;
-    background: rgba(15,23,42,0.6);
-    padding: 6px 10px;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    align-items: center;
+    position:fixed;
+    bottom:1rem;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:0.8rem;
+    z-index:999;
+    background:rgba(15,23,42,0.45);
+    padding:6px 12px;
+    border-radius:24px;
+    backdrop-filter:blur(10px);
+    align-items:center;
+    transition:opacity 0.4s ease;
+  }
+
+  .toolbar.hide {
+    opacity:0; pointer-events:none;
   }
 
   .toolbar button {
-    border: none;
-    background: #f97316;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 14px;
+    border:none;
+    background:rgba(255,255,255,0.15);
+    color:#fff;
+    font-weight:600;
+    padding:8px 12px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:16px;
+    transition:background 0.2s ease;
   }
+
+  .toolbar button:hover { background:rgba(255,255,255,0.3); }
 
   .toolbar span {
-    color: white;
-    font-size: 13px;
-    min-width: 80px;
-    text-align: center;
+    color:#fff;
+    font-size:13px;
+    min-width:70px;
+    text-align:center;
   }
 
-  @media (max-width: 768px) {
-    #flipbook {
-      width: 100vw;
-      height: 80vh;
-      box-shadow: none;
-    }
-    .page {
-      width: 100%;
-      box-shadow: none;
-    }
-    .toolbar {
-      bottom: 0.5rem;
-      gap: 0.4rem;
-      padding: 5px 8px;
-    }
-    .toolbar button {
-      font-size: 13px;
-      padding: 6px 10px;
-    }
+  @media (max-width:768px){
+    #flipbook {width:100vw;height:85vh;box-shadow:none;}
+    .page{width:100%;box-shadow:none;}
+    .toolbar{gap:0.6rem;padding:4px 8px;bottom:0.5rem;}
+    .toolbar button{font-size:15px;padding:6px 10px;}
   }
 </style>
 </head>
@@ -119,7 +119,7 @@
       <div class="page"><img src="pages/27.jpg" alt="Trang 27"></div>
       <div class="page"><img src="pages/28.jpg" alt="Trang 28"></div></div>
 
-  <div class="toolbar">
+  <div class="toolbar" id="toolbar">
     <button onclick="flipPrev()">⟵</button>
     <span id="pageLabel">1 / 28</span>
     <button onclick="flipNext()">⟶</button>
@@ -129,42 +129,85 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/blasten/turn.js/turn.min.js"></script>
   <script>
-    let book, total = 28;
-    $(function() {
+    let book, total=28;
+    let startX=0, currentX=0, dragging=false;
+
+    $(function(){
       book = $('#flipbook');
       book.turn({
-        width: '100%',
-        height: '100%',
-        autoCenter: true,
-        elevation: 80,
-        gradients: true,
-        duration: 1000,
-        acceleration: true,
-        display: window.innerWidth < 768 ? 'single' : 'double'
+        width:'100%',
+        height:'100%',
+        display: window.innerWidth < 768 ? 'single' : 'double',
+        autoCenter:true,
+        acceleration:true,
+        gradients:true,
+        elevation:60,
+        duration:1000
       });
 
       updateLabel();
-      book.bind('turned', function(e, page) { updateLabel(page); });
-
-      // Resize event
+      book.bind('turned', function(e, page){updateLabel(page);});
       window.addEventListener('resize', () => {
         const mode = window.innerWidth < 768 ? 'single' : 'double';
         book.turn('display', mode);
       });
+
+      setupGestures();
+      autoHideToolbar();
     });
 
-    function updateLabel(p) {
+    function updateLabel(p){
       const page = p || book.turn('page');
       document.getElementById('pageLabel').textContent = page + ' / ' + total;
     }
-
-    function flipPrev(){ book.turn('previous'); }
-    function flipNext(){ book.turn('next'); }
-
+    function flipPrev(){book.turn('previous');}
+    function flipNext(){book.turn('next');}
     function toggleFS(){
-      if (!document.fullscreenElement)
+      if(!document.fullscreenElement)
         document.documentElement.requestFullscreen();
       else document.exitFullscreen();
+    }
+
+    // 🖱 Vuốt tay hoặc kéo chuột
+    function setupGestures(){
+      const area = document.getElementById('flipbook');
+
+      const start = (x)=>{ startX=x; currentX=x; dragging=true; };
+      const move  = (x)=>{
+        if(!dragging) return;
+        currentX=x;
+        const delta = currentX - startX;
+        book.css('transform', 'translateX('+(delta*0.05)+'px)');
+      };
+      const end = ()=>{
+        if(!dragging) return;
+        const delta = currentX - startX;
+        dragging=false;
+        book.css('transform','translateX(0)');
+        if(delta > 60) flipPrev();
+        else if(delta < -60) flipNext();
+      };
+
+      // Mouse
+      area.addEventListener('mousedown', e => start(e.clientX));
+      area.addEventListener('mousemove', e => move(e.clientX));
+      area.addEventListener('mouseup', end);
+      area.addEventListener('mouseleave', end);
+
+      // Touch
+      area.addEventListener('touchstart', e => start(e.touches[0].clientX));
+      area.addEventListener('touchmove', e => move(e.touches[0].clientX));
+      area.addEventListener('touchend', e => end());
+    }
+
+    // Ẩn/hiện toolbar
+    function autoHideToolbar(){
+      const tb=document.getElementById('toolbar');
+      let timer=null;
+      const show=()=>{tb.classList.remove('hide');clearTimeout(timer);timer=setTimeout(()=>tb.classList.add('hide'),2500);};
+      document.addEventListener('mousemove',show);
+      document.addEventListener('touchstart',show);
+      show();
     }
   </script>
 </body>
