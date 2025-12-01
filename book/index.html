@@ -2,133 +2,126 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Flipbook Viewer</title>
 <style>
-  html,body {
-    margin:0; padding:0;
-    height:100%; width:100%;
+  html, body {
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
     background: radial-gradient(circle at center, #0f172a, #020617);
-    display:flex; flex-direction:column; justify-content:center; align-items:center;
-    overflow:hidden;
+    overflow: hidden;
+    display: flex; justify-content: center; align-items: center;
   }
+
   #flipbook {
-    width:960px; height:600px;
-    box-shadow:0 0 30px rgba(0,0,0,0.6);
+    width: 90vw;
+    height: 60vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
   }
+
   .page {
-    width:480px; height:600px;
-    background:#fff; box-shadow:inset 0 0 20px rgba(0,0,0,0.15);
+    background: #fff;
+    width: 50%;
+    height: 100%;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
   }
-  .page img {width:100%; height:100%; object-fit:contain;}
+
+  .page img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
   .toolbar {
-    position:fixed; bottom:15px; left:50%; transform:translateX(-50%);
-    display:flex; gap:10px; z-index:10;
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.6rem;
+    z-index: 999;
+    background: rgba(15,23,42,0.6);
+    padding: 6px 10px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    align-items: center;
   }
+
   .toolbar button {
-    background:#f97316; border:none; color:white; font-weight:600;
-    padding:8px 14px; border-radius:8px; cursor:pointer;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    border: none;
+    background: #f97316;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
   }
+
   .toolbar span {
-    color:#fff; font-size:14px; line-height:32px; min-width:100px; text-align:center;
+    color: white;
+    font-size: 13px;
+    min-width: 80px;
+    text-align: center;
   }
-  @media (max-width: 1000px) {
-    #flipbook {width:90vw; height:60vh;}
-    .page {width:45vw; height:60vh;}
+
+  @media (max-width: 768px) {
+    #flipbook {
+      width: 100vw;
+      height: 80vh;
+      box-shadow: none;
+    }
+    .page {
+      width: 100%;
+      box-shadow: none;
+    }
+    .toolbar {
+      bottom: 0.5rem;
+      gap: 0.4rem;
+      padding: 5px 8px;
+    }
+    .toolbar button {
+      font-size: 13px;
+      padding: 6px 10px;
+    }
   }
 </style>
 </head>
 <body>
   <div id="flipbook">
-      <div class="page">
-        <img src="pages/1.jpg" alt="Trang 1">
-      </div>
-      <div class="page">
-        <img src="pages/2.jpg" alt="Trang 2">
-      </div>
-      <div class="page">
-        <img src="pages/3.jpg" alt="Trang 3">
-      </div>
-      <div class="page">
-        <img src="pages/4.jpg" alt="Trang 4">
-      </div>
-      <div class="page">
-        <img src="pages/5.jpg" alt="Trang 5">
-      </div>
-      <div class="page">
-        <img src="pages/6.jpg" alt="Trang 6">
-      </div>
-      <div class="page">
-        <img src="pages/7.jpg" alt="Trang 7">
-      </div>
-      <div class="page">
-        <img src="pages/8.jpg" alt="Trang 8">
-      </div>
-      <div class="page">
-        <img src="pages/9.jpg" alt="Trang 9">
-      </div>
-      <div class="page">
-        <img src="pages/10.jpg" alt="Trang 10">
-      </div>
-      <div class="page">
-        <img src="pages/11.jpg" alt="Trang 11">
-      </div>
-      <div class="page">
-        <img src="pages/12.jpg" alt="Trang 12">
-      </div>
-      <div class="page">
-        <img src="pages/13.jpg" alt="Trang 13">
-      </div>
-      <div class="page">
-        <img src="pages/14.jpg" alt="Trang 14">
-      </div>
-      <div class="page">
-        <img src="pages/15.jpg" alt="Trang 15">
-      </div>
-      <div class="page">
-        <img src="pages/16.jpg" alt="Trang 16">
-      </div>
-      <div class="page">
-        <img src="pages/17.jpg" alt="Trang 17">
-      </div>
-      <div class="page">
-        <img src="pages/18.jpg" alt="Trang 18">
-      </div>
-      <div class="page">
-        <img src="pages/19.jpg" alt="Trang 19">
-      </div>
-      <div class="page">
-        <img src="pages/20.jpg" alt="Trang 20">
-      </div>
-      <div class="page">
-        <img src="pages/21.jpg" alt="Trang 21">
-      </div>
-      <div class="page">
-        <img src="pages/22.jpg" alt="Trang 22">
-      </div>
-      <div class="page">
-        <img src="pages/23.jpg" alt="Trang 23">
-      </div>
-      <div class="page">
-        <img src="pages/24.jpg" alt="Trang 24">
-      </div>
-      <div class="page">
-        <img src="pages/25.jpg" alt="Trang 25">
-      </div>
-      <div class="page">
-        <img src="pages/26.jpg" alt="Trang 26">
-      </div>
-      <div class="page">
-        <img src="pages/27.jpg" alt="Trang 27">
-      </div>
-      <div class="page">
-        <img src="pages/28.jpg" alt="Trang 28">
-      </div></div>
+      <div class="page"><img src="pages/1.jpg" alt="Trang 1"></div>
+      <div class="page"><img src="pages/2.jpg" alt="Trang 2"></div>
+      <div class="page"><img src="pages/3.jpg" alt="Trang 3"></div>
+      <div class="page"><img src="pages/4.jpg" alt="Trang 4"></div>
+      <div class="page"><img src="pages/5.jpg" alt="Trang 5"></div>
+      <div class="page"><img src="pages/6.jpg" alt="Trang 6"></div>
+      <div class="page"><img src="pages/7.jpg" alt="Trang 7"></div>
+      <div class="page"><img src="pages/8.jpg" alt="Trang 8"></div>
+      <div class="page"><img src="pages/9.jpg" alt="Trang 9"></div>
+      <div class="page"><img src="pages/10.jpg" alt="Trang 10"></div>
+      <div class="page"><img src="pages/11.jpg" alt="Trang 11"></div>
+      <div class="page"><img src="pages/12.jpg" alt="Trang 12"></div>
+      <div class="page"><img src="pages/13.jpg" alt="Trang 13"></div>
+      <div class="page"><img src="pages/14.jpg" alt="Trang 14"></div>
+      <div class="page"><img src="pages/15.jpg" alt="Trang 15"></div>
+      <div class="page"><img src="pages/16.jpg" alt="Trang 16"></div>
+      <div class="page"><img src="pages/17.jpg" alt="Trang 17"></div>
+      <div class="page"><img src="pages/18.jpg" alt="Trang 18"></div>
+      <div class="page"><img src="pages/19.jpg" alt="Trang 19"></div>
+      <div class="page"><img src="pages/20.jpg" alt="Trang 20"></div>
+      <div class="page"><img src="pages/21.jpg" alt="Trang 21"></div>
+      <div class="page"><img src="pages/22.jpg" alt="Trang 22"></div>
+      <div class="page"><img src="pages/23.jpg" alt="Trang 23"></div>
+      <div class="page"><img src="pages/24.jpg" alt="Trang 24"></div>
+      <div class="page"><img src="pages/25.jpg" alt="Trang 25"></div>
+      <div class="page"><img src="pages/26.jpg" alt="Trang 26"></div>
+      <div class="page"><img src="pages/27.jpg" alt="Trang 27"></div>
+      <div class="page"><img src="pages/28.jpg" alt="Trang 28"></div></div>
 
   <div class="toolbar">
     <button onclick="flipPrev()">⟵</button>
-    <span id="pageLabel">Trang 1 / 28</span>
+    <span id="pageLabel">1 / 28</span>
     <button onclick="flipNext()">⟶</button>
     <button onclick="toggleFS()">⛶</button>
   </div>
@@ -136,44 +129,42 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/blasten/turn.js/turn.min.js"></script>
   <script>
-    let book, total=28;
-    $(function(){
+    let book, total = 28;
+    $(function() {
       book = $('#flipbook');
       book.turn({
-        width:960, height:600, autoCenter:true,
-        elevation:80, gradients:true, duration:1200
+        width: '100%',
+        height: '100%',
+        autoCenter: true,
+        elevation: 80,
+        gradients: true,
+        duration: 1000,
+        acceleration: true,
+        display: window.innerWidth < 768 ? 'single' : 'double'
       });
 
       updateLabel();
+      book.bind('turned', function(e, page) { updateLabel(page); });
 
-      book.bind('turned', function(e, page){
-        updateLabel(page);
+      // Resize event
+      window.addEventListener('resize', () => {
+        const mode = window.innerWidth < 768 ? 'single' : 'double';
+        book.turn('display', mode);
       });
-
-      // Auto-scale trên mobile
-      autoScale();
-      window.addEventListener('resize', autoScale);
     });
 
-    function updateLabel(p){
+    function updateLabel(p) {
       const page = p || book.turn('page');
-      document.getElementById('pageLabel').textContent = 'Trang ' + page + ' / ' + total;
+      document.getElementById('pageLabel').textContent = page + ' / ' + total;
     }
 
     function flipPrev(){ book.turn('previous'); }
     function flipNext(){ book.turn('next'); }
 
     function toggleFS(){
-      if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+      if (!document.fullscreenElement)
+        document.documentElement.requestFullscreen();
       else document.exitFullscreen();
-    }
-
-    function autoScale(){
-      const w = window.innerWidth;
-      let s = w / 1100;
-      if(s > 1) s = 1;
-      book.css('transform', 'scale(' + s + ')');
-      book.css('transform-origin', 'top center');
     }
   </script>
 </body>
